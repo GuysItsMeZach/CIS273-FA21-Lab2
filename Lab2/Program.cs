@@ -20,6 +20,11 @@ namespace Lab2
         {
             Stack<char> stack = new Stack<char>();
 
+            if (s.Length == 0)
+            {
+                return true;
+            }
+
             foreach( char c in s)
             {
                 // If opening symbol, then push onto stack
@@ -31,7 +36,12 @@ namespace Lab2
                 // If closing symbol, then see if it matches the top
                 else if (c == '}' || c == '>' || c == ']' || c == ')')
                 {
-                    if( Matches(stack.Peek(), c) )
+                    if ( stack.Count == 0)
+                    {
+                        return false;
+                    }
+
+                    else if( Matches(stack.Peek(), c) )
                     {
                         stack.Pop();
                     }
@@ -45,6 +55,8 @@ namespace Lab2
                 else
                 {
                     //continue;
+                    
+
                 }
             }
 
@@ -62,6 +74,38 @@ namespace Lab2
         private static bool Matches(char open, char close)
         {
             // do the matching
+            switch (open){
+                case '{':
+                    if (close == '}')
+                    {
+                        return true;
+                    }
+                    else
+                        return false;
+
+                case '<':
+                    if (close == '>')
+                    {
+                        return true;
+                    }
+                    else
+                        return false;
+                case '[':
+                    if (close == ']')
+                    {
+                        return true;
+                    }
+                    else
+                        return false;
+                case '(':
+                    if (close == ')')
+                    {
+                        return true;
+                    }
+                    else
+                        return false;
+
+            }
 
             return true;
         }
@@ -78,6 +122,34 @@ namespace Lab2
             Stack<double> stack = new Stack<double>();
 
             // foreach token
+            foreach(string n in tokens)
+            {
+                try
+                {
+                    double number = int.Parse(n);
+                    stack.Push(number);
+                }
+                catch (FormatException)
+                {
+                    switch (n)
+                    {
+                        case "+":
+                            stack.Push(stack.Pop() + stack.Pop());
+                            continue;
+                        case "-":
+                            stack.Push(-(stack.Pop()) + stack.Pop());
+                            continue;
+                        case "/":
+                            stack.Push((1 / stack.Pop()) * stack.Pop());
+                            continue;
+                        case "*":
+                            stack.Push(stack.Pop() * stack.Pop());
+                            continue;
+                        default:
+                            continue;
+                    }
+                }
+            }
                 // If token is an integer
                 // Push on stack
 
